@@ -8,21 +8,7 @@ static timing analysis.
 
 ## Flow
 
-SystemVerilog RTL
-        ↓
-Simulation
-        ↓
-Yosys Synthesis
-        ↓
-Gate-Level Netlist
-        ↓
-OpenSTA
-        ↓
-Timing Analysis
-        ↓
-RTL Optimization
-        ↓
-Re-analysis
+SystemVerilog RTL → Simulation → Synthesis (Yosys) → STA (OpenSTA) → Critical Path Analysis → RTL Optimization
 
 ## Features
 
