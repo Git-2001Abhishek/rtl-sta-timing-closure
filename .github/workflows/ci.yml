@@ -31,6 +31,10 @@ jobs:
         run: make gls PYTHON=python 2>&1 | tee build/step_gls.log
       - name: Summary
         run: cat reports/summary.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Publish key results
+        run: |
+          python scripts/ci_annotate.py --notice --lines 6 results/sim.log results/gls.log
+          python scripts/ci_annotate.py --notice --lines 25 reports/summary.md
       - name: Report failure details
         if: failure()
         run: python scripts/ci_annotate.py build/step_*.log
@@ -67,6 +71,8 @@ jobs:
             done' 2>&1 | tee build/step_opensta.log
       - name: Compare with sta.py
         run: python scripts/compare_opensta.py 2>&1 | tee build/step_compare.log | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Publish comparison
+        run: python scripts/ci_annotate.py --notice --lines 15 build/step_compare.log
       - name: Report failure details
         if: failure()
         run: python scripts/ci_annotate.py build/step_*.log
