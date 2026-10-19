@@ -14,6 +14,9 @@ jobs:
           python-version: "3.12"
       - run: pip install matplotlib pytest
       - uses: YosysHQ/setup-oss-cad-suite@v3
+      - name: Tool versions
+        run: |
+          yosys -V; iverilog -V | head -n 1; verilator --version
       - name: Download NanGate45 libraries
         run: make lib PYTHON=python
       - name: STA engine unit tests
@@ -21,19 +24,24 @@ jobs:
       - name: Lint (Verilator -Wall)
         run: make lint
       - name: RTL simulation
-        run: make sim
+        run: mkdir -p build && make sim 2>&1 | tee build/step_sim.log
       - name: Synthesis + hold fix + multi-corner STA
-        run: make flow PYTHON=python
+        run: make flow PYTHON=python 2>&1 | tee build/step_flow.log
       - name: Gate-level simulation
-        run: make gls PYTHON=python
+        run: make gls PYTHON=python 2>&1 | tee build/step_gls.log
       - name: Summary
         run: cat reports/summary.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Report failure details
+        if: failure()
+        run: python scripts/ci_annotate.py build/step_*.log
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: flow-results
           path: |
             reports/
             results/
+            build/*.log
 
   # Cross-check the committed netlists with OpenSTA (bundled in OpenROAD).
   # Non-blocking: the comparison table lands in the job summary; a
@@ -50,16 +58,22 @@ jobs:
         run: make lib PYTHON=python
       - name: Run OpenSTA (openroad/orfs image)
         run: |
+          mkdir -p build
           docker run --rm -v "$PWD:/work" -w /work openroad/orfs:latest bash -c '
             OR=$(command -v openroad || find / -name openroad -type f -perm -u+x 2>/dev/null | head -n 1)
-            echo "using $OR"
+            echo "using openroad: $OR"
             for d in dot2_v1 dot2_v2 dot2_v3 dot2_v4 dot2_v5; do
-              DESIGN=$d "$OR" -exit scripts/sta.tcl
-            done'
+              DESIGN=$d "$OR" -exit scripts/sta.tcl || exit 1
+            done' 2>&1 | tee build/step_opensta.log
       - name: Compare with sta.py
-        run: python scripts/compare_opensta.py | tee -a "$GITHUB_STEP_SUMMARY"
+        run: python scripts/compare_opensta.py 2>&1 | tee build/step_compare.log | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Report failure details
+        if: failure()
+        run: python scripts/ci_annotate.py build/step_*.log
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: opensta-reports
-          path: reports/*_opensta.rpt
+          path: |
+            reports/*_opensta.rpt
+            build/*.log
