@@ -6,8 +6,6 @@
 #
 # Run from the repository root after `make flow` has produced the netlists.
 # Uses the same library, wire-load model and SDC as scripts/sta.py.
-# NOTE: written against the OpenSTA command reference but not run yet
-# (OpenSTA was not available on the Windows machine used for this project).
 # -----------------------------------------------------------------------------
 if {[info exists ::env(DESIGN)]} {
     set design $::env(DESIGN)
@@ -15,6 +13,12 @@ if {[info exists ::env(DESIGN)]} {
     set design dot2_v5
 }
 
+# OpenROAD (unlike standalone OpenSTA) needs a technology before linking:
+# pass the NanGate45 LEFs through TECH_LEF / MACRO_LEF when running there.
+if {[info exists ::env(TECH_LEF)]} {
+    read_lef $::env(TECH_LEF)
+    read_lef $::env(MACRO_LEF)
+}
 read_liberty lib/nangate45_typ.lib
 read_verilog results/$design/${design}_netlist.v
 link_design $design

@@ -12,7 +12,9 @@ synth -top {TOP} -flatten {SYNTH_OPTS}
 
 # map flip-flops, then combinational logic, to NanGate45 cells
 dfflibmap -liberty {LIB}
-abc -D {DELAY_PS} -liberty {LIB}
+# FA_X1 / HA_X1 are excluded: newer Yosys builds map onto these multi-output
+# cells and (as of 0.70+157) leave outputs undriven in the written netlist.
+abc -D {DELAY_PS} -liberty {LIB} -dont_use FA_X1 -dont_use HA_X1
 opt_clean
 
 # tie cells for constants, clean up

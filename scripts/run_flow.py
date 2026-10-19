@@ -113,6 +113,17 @@ def main():
         print(hf)
         buffers = int(re.findall(r"(\d+) buffers so far", hf)[-1])
 
+        # sanity check: every output port bit must be driven by a cell
+        sys.path.insert(0, "scripts")
+        from sta import Design, Library
+        if "_lib_typ" not in globals():
+            globals()["_lib_typ"] = Library(LIBS["typ"])
+        d = Design(globals()["_lib_typ"], final_json, top)
+        undriven = [p for p in d.out_ports if d.driver.get(d.port_bits[p]) is None]
+        if undriven:
+            sys.exit("%s: %d output bits undriven after synthesis (e.g. %s) - netlist is broken"
+                     % (top, len(undriven), ", ".join(undriven[:4])))
+
         # final netlist as Verilog + area report
         run([yosys, "-q", "-p",
              "read_json %s; tee -q -o reports/%s_area%s.rpt stat -liberty %s; "

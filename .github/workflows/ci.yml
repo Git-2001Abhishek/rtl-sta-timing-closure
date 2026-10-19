@@ -79,7 +79,10 @@ jobs:
           mkdir -p build
           docker run --rm -v "$PWD:/work" -w /work openroad/orfs:latest bash -c '
             OR=$(command -v openroad || find / -name openroad -type f -perm -u+x 2>/dev/null | head -n 1)
-            echo "using openroad: $OR"
+            P=$(dirname "$(find / -path "*platforms/nangate45/lef*" -name "*tech.lef" 2>/dev/null | head -n 1)")
+            export TECH_LEF=$(ls $P/*tech.lef | head -n 1)
+            export MACRO_LEF=$(ls $P/*macro*.lef | head -n 1)
+            echo "using openroad: $OR"; echo "TECH_LEF=$TECH_LEF"; echo "MACRO_LEF=$MACRO_LEF"
             for d in dot2_v1 dot2_v2 dot2_v3 dot2_v4 dot2_v5; do
               DESIGN=$d "$OR" -exit scripts/sta.tcl || exit 1
             done' 2>&1 | tee build/step_opensta.log
