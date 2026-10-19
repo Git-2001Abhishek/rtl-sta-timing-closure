@@ -1,0 +1,114 @@
+==============================================================================
+Static timing report  -  design dot2_v5
+library  : NangateOpenCellLibrary_slow (nangate45_slow.lib)   wire load: 5K_hvratio_1_1
+clock    : clk  period 1.000 ns  uncertainty 0.050 ns  transition 0.020 ns
+cells    : 3596  (334 sequential)
+==============================================================================
+
+Summary
+-------
+setup  WNS   -2.365 ns   TNS  -322.221 ns   violating endpoints 256 / 368
+       worst setup slack -2.365 ns
+hold   WHS    0.123 ns                     violating endpoints 0 / 368
+critical path data arrival 3.156 ns
+minimum clock period 3.365 ns  ->  Fmax 297.2 MHz
+
+Worst setup endpoints
+---------------------
+    -2.365  y_reg[31]/D (DFF_X1)
+    -2.175  y_reg[29]/D (DFF_X1)
+    -2.069  y_reg[27]/D (DFF_X1)
+    -2.045  g_level[4].g_csa[0].x0_reg[15]/D (DFF_X1)
+    -1.968  g_level[4].g_csa[1].x1_reg[23]/D (DFF_X1)
+    -1.962  g_level[4].g_csa[1].x1_reg[21]/D (DFF_X1)
+    -1.932  g_level[4].g_csa[1].x1_reg[18]/D (DFF_X1)
+    -1.925  g_level[4].g_csa[1].x1_reg[19]/D (DFF_X1)
+    -1.922  g_level[4].g_csa[1].x1_reg[16]/D (DFF_X1)
+    -1.913  g_level[4].g_csa[0].x2_reg[16]/D (DFF_X1)
+
+==============================================================================
+Setup path 1
+==============================================================================
+Startpoint: s_q_reg[5]/CK (DFF_X1)  (rising edge-triggered flip-flop clocked by clk)
+Endpoint:   y_reg[31]/D (DFF_X1)  (rising edge-triggered flip-flop clocked by clk)
+Path Group: clk
+Path Type:  max
+
+ Load(fF)      Slew    Delay     Time   Description
+------------------------------------------------------------------------------
+                       0.000    0.000   clock clk (rise edge)
+                       0.000    0.000   clock network delay (ideal)
+              0.020    0.000    0.000 ^ s_q_reg[5]/CK (DFF_X1)
+     8.67     0.080    0.360    0.360 ^ s_q_reg[5]/Q (DFF_X1)
+                                          s_q[5] (net)
+              0.080    0.000    0.360 ^ g311/A (XOR2_X1)
+     6.20     0.162    0.267    0.627 ^ g311/Z (XOR2_X1)
+              0.162    0.000    0.627 ^ g314/A4 (AND4_X1)
+     3.88     0.054    0.236    0.863 ^ g314/ZN (AND4_X1)
+              0.054    0.000    0.863 ^ g331/B2 (OAI21_X1)
+     3.90     0.044    0.066    0.928 v g331/ZN (OAI21_X1)
+              0.044    0.000    0.928 v g335/C1 (AOI211_X1)
+     3.86     0.205    0.222    1.151 ^ g335/ZN (AOI211_X1)
+              0.205    0.000    1.151 ^ g358/B2 (OAI221_X1)
+     3.90     0.063    0.159    1.310 v g358/ZN (OAI221_X1)
+              0.063    0.000    1.310 v g362/C1 (AOI211_X1)
+     1.90     0.150    0.169    1.479 ^ g362/ZN (AOI211_X1)
+              0.150    0.000    1.479 ^ g368/B1 (OAI221_X1)
+     3.91     0.057    0.134    1.613 v g368/ZN (OAI221_X1)
+              0.057    0.000    1.613 v g445/C2 (AOI211_X1)
+     3.88     0.206    0.261    1.874 ^ g445/ZN (AOI211_X1)
+              0.206    0.000    1.874 ^ g451/C1 (OAI211_X1)
+     3.90     0.076    0.129    2.002 v g451/ZN (OAI211_X1)
+              0.076    0.000    2.002 v g457/C1 (AOI211_X1)
+     3.88     0.206    0.238    2.240 ^ g457/ZN (AOI211_X1)
+              0.206    0.000    2.240 ^ g463/C1 (OAI211_X1)
+     3.90     0.076    0.129    2.369 v g463/ZN (OAI211_X1)
+              0.076    0.000    2.369 v g468/C1 (AOI211_X1)
+     3.89     0.206    0.238    2.607 ^ g468/ZN (AOI211_X1)
+              0.206    0.000    2.607 ^ g473/B1 (OAI221_X1)
+     3.90     0.062    0.149    2.756 v g473/ZN (OAI221_X1)
+              0.062    0.000    2.756 v g478/C1 (AOI211_X1)
+     1.91     0.150    0.169    2.925 ^ g478/ZN (AOI211_X1)
+              0.150    0.000    2.925 ^ g482/B1 (OAI22_X1)
+     2.85     0.036    0.100    3.024 v g482/ZN (OAI22_X1)
+              0.036    0.000    3.024 v g483/B (XNOR2_X1)
+     1.42     0.039    0.132    3.156 v g483/ZN (XNOR2_X1)
+                                          u_add.sum[31] (net)
+              0.039    0.000    3.156 v y_reg[31]/D (DFF_X1)
+                                3.156   data arrival time
+
+                       1.000    1.000   clock clk (rise edge)
+                       0.000    1.000   clock network delay (ideal)
+                      -0.050    0.950   clock uncertainty
+                      -0.159    0.791   library setup time
+                                0.791   data required time
+------------------------------------------------------------------------------
+                               -2.365   slack (VIOLATED)
+
+logic depth: 16 gates
+
+==============================================================================
+Hold path 1
+==============================================================================
+Startpoint: a[0] (port)  (input port clocked by clk)
+Endpoint:   a_q_reg[0]/D (DFF_X1)  (rising edge-triggered flip-flop clocked by clk)
+Path Group: clk
+Path Type:  min
+
+ Load(fF)      Slew    Delay     Time   Description
+------------------------------------------------------------------------------
+                       0.000    0.000   clock clk (rise edge)
+                       0.000    0.000   clock network delay (ideal)
+     1.42     0.020    0.200    0.200 ^ a[0] (port)
+              0.020    0.000    0.200 ^ a_q_reg[0]/D (DFF_X1)
+                                0.200   data arrival time
+
+                       0.000    0.000   clock clk (rise edge)
+                       0.050    0.050   clock uncertainty
+                       0.027    0.077   library hold time
+                                0.077   data required time
+------------------------------------------------------------------------------
+                                0.123   slack (MET)
+
+logic depth: 0 gates
+

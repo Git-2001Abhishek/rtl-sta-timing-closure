@@ -1,5 +1,7 @@
 # RTL Design, Synthesis & Static Timing Analysis
 
+[![CI](https://github.com/Git-2001Abhishek/rtl-sta-timing-closure/actions/workflows/ci.yml/badge.svg)](https://github.com/Git-2001Abhishek/rtl-sta-timing-closure/actions/workflows/ci.yml)
+
 ## Overview
 
 Designed and verified a pipelined arithmetic datapath in SystemVerilog
@@ -14,24 +16,30 @@ y = a*b + c*d          a, b, c, d: 16-bit unsigned,  y: 33-bit
 
 implemented in five versions. Each one is an RTL change aimed at the
 critical path reported by STA for the version before it. The target is
-**1 GHz** in the NanGate 45 nm open cell library.
+**1 GHz** in the NanGate 45 nm open cell library (typical corner). Every
+version also gets a hold-fix ECO and is signed off at the slow, typical
+and fast corners.
 
 ## Flow
 
-SystemVerilog RTL → Simulation → Synthesis (Yosys) → STA → Critical Path Analysis → RTL Optimization
+SystemVerilog RTL → Simulation → Synthesis (Yosys) → Hold fix → Multi-corner STA → Critical Path Analysis → RTL Optimization
 
 ```text
 rtl/*.sv ──► Icarus Verilog (tb_dot2: RTL sim, 5 versions in parallel)
    │
    ▼
-Yosys  synth -flatten -noabc → dfflibmap → abc -D 1000 -liberty nangate45
-   │                                   (scripts/synth.ys, scripts/run_flow.py)
-   ├──► gate-level netlists ──► Icarus Verilog (same testbench, -DGLS)
+Yosys      synth -flatten -noabc → dfflibmap → abc -D 1000 -liberty (typical)
+   │                                     (scripts/synth.ys, scripts/run_flow.py)
    ▼
-STA    constraints/dot2.sdc ──► scripts/sta.py   (+ scripts/sta.tcl for OpenSTA)
+Hold ECO   insert delay buffers until hold slack ≥ 10 ps at the FAST corner
+   │                                     (scripts/hold_fix.py)
+   ├──► final netlists ──► Icarus Verilog (same testbench, -DGLS)
+   ▼
+STA        slow / typical / fast  ×  constraints/dot2.sdc
+           scripts/sta.py  (+ scripts/sta.tcl: OpenSTA cross-check in CI)
    │
    ▼
-reports/  setup / hold paths, WNS / TNS, Fmax, area
+reports/   setup / hold paths per corner, WNS / TNS, Fmax, area, summary
 ```
 
 ## Features
@@ -41,11 +49,14 @@ reports/  setup / hold paths, WNS / TNS, Fmax, area
 - SDC timing constraints
 - RTL synthesis using Yosys
 - Static timing analysis: NLDM timing engine written for this project
-  ([`scripts/sta.py`](scripts/sta.py)), plus an OpenSTA script for the same run
+  ([`scripts/sta.py`](scripts/sta.py)), unit-tested, plus an OpenSTA
+  cross-check that runs in CI
 - Critical-path identification
-- Setup/hold analysis
+- Setup/hold analysis at three PVT corners (slow / typical / fast)
+- Hold-fix ECO (delay-buffer insertion) at the fast corner
 - Timing optimization through RTL modification
-- Gate-level simulation of every synthesized netlist
+- Gate-level simulation of every final (post-ECO) netlist
+- Continuous integration (GitHub Actions)
 
 ## Design versions
 
@@ -65,8 +76,14 @@ don't need one.
 
 [`constraints/dot2.sdc`](constraints/dot2.sdc): 1.0 ns clock, 50 ps clock
 uncertainty, 20 ps clock / input transition, 0.2 ns input and output
-delays, 2 fF output load, `rst_n` false-pathed. NanGate45 typical corner
-(1.1 V, 25 °C), wire-load model `5K_hvratio_1_1`.
+delays, 2 fF output load, `rst_n` false-pathed. Wire-load model
+`5K_hvratio_1_1`.
+
+| Corner | Process | Voltage | Temperature | Used for |
+| --- | --- | --- | --- | --- |
+| slow | SS | 0.95 V | 125 °C | worst-case setup |
+| typical | TT | 1.10 V | 25 °C | synthesis target, main setup analysis |
+| fast | FF | 1.25 V | 0 °C | hold (and hold fixing) |
 
 ## Timing Analysis
 
@@ -100,32 +117,64 @@ of AOI/OAI gates. Yosys' generic pre-mapping ABC pass optimizes for area
 and had restructured the parallel-prefix carry network. Running
 `synth -noabc` leaves all mapping to the single timing-driven
 `abc -D 1000 -liberty` run, which keeps the structure, and v5 then closes
-timing. The flow now uses `-noabc` for every version. The full
-default-flow numbers are in
+timing. The flow now uses `-noabc` for every version. The advantage holds
+at the slow corner too: 297 vs. 257 MHz. The full default-flow numbers are in
 [`reports/summary_default_synth.md`](reports/summary_default_synth.md).
+
+### Multi-corner finding: hold violations only show up at the fast corner
+
+At the typical corner every version met hold. At the fast corner,
+**v3, v4 and v5 violated hold by 3 ps**. The failing paths were
+register-to-register connections with no logic in between, for example
+`s_q[0..3] → y[0..3]` in v5: the low bits of the carry row are always 0,
+so the sum bits pass straight through the final adder. The delay at
+1.25 V / 0 °C is shorter than hold time + 50 ps uncertainty.
+
+[`scripts/hold_fix.py`](scripts/hold_fix.py) does what a P&R tool's hold
+repair does. It re-times the netlist at the fast corner and inserts a
+`BUF_X1` in front of every flop pin whose hold slack is below the 10 ps margin,
+repeating until none are left ([`reports/hold_fix.log`](reports/hold_fix.log)).
+v5 needs 11 buffers, v4 needs 74 (many shifted partial-product bits pass
+straight through). Setup is unaffected, because the buffered pins all have
+large setup slack.
 
 ## Results
 
-Target 1.000 ns, from [`reports/summary.md`](reports/summary.md):
+From [`reports/summary.md`](reports/summary.md), final (post-ECO) netlists.
 
-| Design | Latency | Cells | Flops | Area (µm²) | Setup slack (ns) | TNS (ns) | Setup viol. | Hold slack (ns) | Min period (ns) | Fmax (MHz) |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| dot2_v1 | 2 | 3276 | 99 | 3999.3 | -1.251 | -20.926 | 29 / 133 | +0.035 | 2.251 | 444 |
-| dot2_v2 | 3 | 3253 | 164 | 4220.1 | -0.974 | -28.495 | 63 / 198 | +0.035 | 1.974 | 507 |
-| dot2_v3 | 4 | 3294 | 261 | 4590.4 | -0.592 | -22.690 | 87 / 295 | +0.031 | 1.592 | 628 |
-| dot2_v4 | 5 | 3358 | 422 | 5255.1 | -0.402 | -17.732 | 101 / 456 | +0.031 | 1.402 | 713 |
-| **dot2_v5** | **4** | 3585 | 334 | 5142.0 | **+0.020** | **0.000** | **0 / 368** | +0.031 | **0.980** | **1021** |
+**Setup at the typical corner (1.000 ns target)**
+
+| Design | Latency | Cells | Flops | Area (µm²) | Setup slack (ns) | TNS (ns) | Setup viol. | Min period (ns) | Fmax (MHz) |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| dot2_v1 | 2 | 3277 | 99 | 4000.1 | -1.251 | -20.926 | 29 / 133 | 2.251 | 444 |
+| dot2_v2 | 3 | 3255 | 164 | 4221.7 | -0.974 | -28.495 | 63 / 198 | 1.974 | 507 |
+| dot2_v3 | 4 | 3332 | 261 | 4620.7 | -0.592 | -22.731 | 87 / 295 | 1.592 | 628 |
+| dot2_v4 | 5 | 3432 | 422 | 5314.1 | -0.402 | -17.844 | 102 / 456 | 1.402 | 713 |
+| **dot2_v5** | **4** | 3596 | 334 | 5150.8 | **+0.020** | **0.000** | **0 / 368** | **0.980** | **1021** |
+
+**All corners**
+
+| Design | Fmax slow (MHz) | Fmax typ (MHz) | Fmax fast (MHz) | Hold slack slow / typ / fast (ns) | Hold buffers |
+| --- | --- | --- | --- | --- | --- |
+| dot2_v1 | 124 | 444 | 789 | +0.123 / +0.059 / +0.015 | 1 |
+| dot2_v2 | 144 | 507 | 886 | +0.123 / +0.053 / +0.011 | 2 |
+| dot2_v3 | 180 | 628 | 1076 | +0.123 / +0.053 / +0.011 | 38 |
+| dot2_v4 | 207 | 713 | 1213 | +0.123 / +0.053 / +0.011 | 74 |
+| **dot2_v5** | **297** | **1021** | **1733** | +0.123 / +0.053 / +0.011 | 11 |
 
 ![Timing comparison](results/timing_comparison.png)
 
-- **2.3× Fmax** from v1 to v5 (444 → 1021 MHz) for +29 % area.
+- **2.3× Fmax** from v1 to v5 at the typical corner (444 → 1021 MHz), and
+  **2.4×** at the slow corner (124 → 297 MHz), for +29 % area.
 - v5 is faster than v4 with **one cycle less latency** and fewer flops:
   architecture beat brute-force pipelining.
-- No hold violations in any version. The worst hold paths are
-  flop-to-flop shift registers (`vld_reg`), which still have 31–35 ps of
-  margin even with an ideal clock and 50 ps uncertainty.
+- **1 GHz is a typical-corner result.** At the slow corner (0.95 V,
+  125 °C) the NanGate45 cells are about 3.4× slower and v5 runs at
+  297 MHz. Signing off 1 GHz at the worst-case corner would need a
+  re-synthesis targeting the slow library and deeper pipelining.
+- Hold is met at all three corners with at least 11 ps margin after the ECO.
 
-Excerpt of the v5 critical path ([full report](reports/dot2_v5_timing.rpt)):
+Excerpt of the v5 critical path, typical corner ([full report](reports/dot2_v5_timing_typ.rpt)):
 
 ```text
 Startpoint: s_q_reg[5]/CK (DFF_X1)
@@ -150,8 +199,8 @@ Endpoint:   y_reg[31]/D (DFF_X1)
   with random `in_valid` bubbles and a reset in the middle of traffic.
   **TEST PASSED**, about 3,775 results checked per version.
 - **Gate-level** ([`results/gls.log`](results/gls.log)): the same
-  testbench on the five synthesized NanGate45 netlists (zero-delay cell
-  models generated from the Liberty `function`s by
+  testbench on the five final NanGate45 netlists, including the hold-fix
+  buffers (zero-delay cell models generated from the Liberty `function`s by
   [`scripts/lib2v.py`](scripts/lib2v.py)). **TEST PASSED**.
 - Mutation check: breaking the recombine shift in v3 makes the RTL run fail
   on nearly every vector.
@@ -172,30 +221,44 @@ analysis OpenSTA does for a single-clock design in wire-load mode:
 - prints OpenSTA-style path reports, WNS / TNS and Fmax
 
 Limitations: ideal clock network, no recovery/removal checks on async
-reset, no wire RC delay, no CRPR or OCV. Cell delays were hand-checked
-against the Liberty tables (e.g. `DFF_X1` CK→Q at 49.9 fF / 20 ps:
-table interpolation gives 0.2057 ns, the report shows 0.206 ns).
+reset, no wire RC delay, no CRPR or OCV.
 
-[`scripts/sta.tcl`](scripts/sta.tcl) runs the same netlists, library,
-wire-load model and SDC through OpenSTA (`make opensta`) on a machine
-where it is installed (for example Linux or WSL). **It has not been run
-yet**, so all numbers in this README come from `sta.py`. Comparing the two
-is the obvious next validation step. Expect small differences: OpenSTA
-also models wire RC delay and computes slews more carefully.
+How it is validated:
+
+- **Unit tests** ([`tests/test_sta.py`](tests/test_sta.py), `make test`,
+  7 tests). A small hand-written Liberty library with different rise and
+  fall delays checks bilinear interpolation and extrapolation, rise/fall
+  propagation through negative-unate cells, setup and hold slack, net load,
+  path tracing and SDC parsing, all against hand-computed values. One more
+  test checks a real NanGate45 arc (`DFF_X1` CK→Q at 49.9 fF / 20 ps:
+  0.2057 ns by hand).
+- **OpenSTA cross-check in CI**. The `opensta` job of
+  [the CI workflow](.github/workflows/ci.yml) runs
+  [`scripts/sta.tcl`](scripts/sta.tcl) on the committed netlists in the
+  `openroad/orfs` Docker image (OpenROAD embeds OpenSTA).
+  [`scripts/compare_opensta.py`](scripts/compare_opensta.py) then puts the
+  setup and hold slack from both tools side by side and flags any
+  difference above 50 ps (the job is non-blocking, so CI stays green). It could not be run on the Windows machine
+  this was developed on; the first CI run is the first real comparison.
 
 ## How to run
 
-Requirements: Python 3 (+ matplotlib for the chart), Icarus Verilog 12+,
-and Yosys. Any Yosys works, including the pip-installable `yowasp-yosys`.
+Requirements: Python 3 (+ matplotlib for the chart, pytest for the
+tests), Icarus Verilog 12+, and Yosys. Any Yosys works, including the
+pip-installable `yowasp-yosys`.
 
 ```bash
-make lib          # download lib/nangate45_typ.lib (from the OpenSTA repo)
+make lib          # download NanGate45 slow / typ / fast libraries (OpenSTA repo)
+make test         # STA engine unit tests
 make sim          # RTL simulation
-make flow         # synthesis + STA for all versions -> reports/, results/
-make gls          # gate-level simulation of the netlists
-make opensta      # optional: OpenSTA cross-check
+make flow         # synthesis + hold fix + multi-corner STA -> reports/, results/
+make gls          # gate-level simulation of the final netlists
 make lint         # Verilator -Wall lint (all versions clean)
+make opensta      # optional: OpenSTA cross-check (needs OpenSTA / OpenROAD)
 ```
+
+All of the above runs in GitHub Actions on every push
+([`.github/workflows/ci.yml`](.github/workflows/ci.yml)).
 
 With `yowasp-yosys` instead of a native Yosys:
 
@@ -210,7 +273,8 @@ Other target periods: `python scripts/run_flow.py --period 1.25`.
 
 - SystemVerilog
 - Yosys
-- Python STA engine (`scripts/sta.py`), OpenSTA script (`scripts/sta.tcl`)
+- Python STA engine (`scripts/sta.py`), OpenSTA / OpenROAD (CI cross-check)
+- pytest, GitHub Actions
 - Icarus Verilog
 - Verilator (lint)
 - GTKWave
@@ -221,8 +285,10 @@ Other target periods: `python scripts/run_flow.py --period 1.25`.
 rtl/          - RTL source (dot2_v1 .. dot2_v5, ks_adder)
 tb/           - Testbench (RTL and gate-level)
 constraints/  - SDC constraints
-scripts/      - Synthesis, STA, flow and helper scripts
-reports/      - Timing and area reports, summary tables
-results/      - Netlists, simulation logs, figures
-lib/          - Liberty file (downloaded, not committed)
+scripts/      - Synthesis, hold fix, STA, flow and helper scripts
+tests/        - Unit tests for the STA engine
+reports/      - Timing reports per corner, area, hold-fix log, summaries
+results/      - Final netlists, simulation logs, figures
+lib/          - Liberty files (downloaded, not committed)
+.github/      - CI workflow (flow + OpenSTA cross-check)
 ```

@@ -1,6 +1,7 @@
 # Yosys synthesis script for one datapath version.
-# run_flow.py substitutes {TOP}, {SOURCES}, {LIB}, {OUT} and {DELAY_PS} and
-# runs the result with `yosys -s`.
+# run_flow.py substitutes {TOP}, {SOURCES}, {LIB}, {OUT}, {DELAY_PS} and
+# {SYNTH_OPTS} and runs the result with `yosys -s`. The output is the
+# pre-ECO netlist; run_flow.py then runs the hold fix (scripts/hold_fix.py).
 
 read_liberty -lib {LIB}
 read_verilog -sv {SOURCES}
@@ -20,6 +21,4 @@ setundef -zero
 splitnets
 opt_clean -purge
 
-tee -o {OUT}/area.rpt stat -liberty {LIB}
-write_verilog -noattr -noexpr {OUT}/{TOP}_netlist.v
-write_json {OUT}/{TOP}_netlist.json
+write_json {OUT}/{TOP}_synth.json

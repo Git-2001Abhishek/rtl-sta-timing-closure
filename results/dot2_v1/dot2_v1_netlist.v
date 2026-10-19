@@ -3359,6 +3359,7 @@ module dot2_v1(clk, rst_n, in_valid, a, b, c, d, out_valid, y);
   wire \d_q[7] ;
   wire \d_q[8] ;
   wire \d_q[9] ;
+  wire holdfix_net_0;
   wire \vld[0] ;
   NAND2_X1 _3276_ (
     .A1(\a_q[0] ),
@@ -20145,7 +20146,7 @@ module dot2_v1(clk, rst_n, in_valid, a, b, c, d, out_valid, y);
   );
   DFFR_X1 _6454_ (
     .CK(clk),
-    .D(\vld[0] ),
+    .D(holdfix_net_0),
     .Q(out_valid),
     .QN(_3238_),
     .RN(rst_n)
@@ -20731,5 +20732,9 @@ module dot2_v1(clk, rst_n, in_valid, a, b, c, d, out_valid, y);
     .D(d[15]),
     .Q(\d_q[15] ),
     .QN(_3239_)
+  );
+  BUF_X1 holdfix_buf_0 (
+    .A(\vld[0] ),
+    .Z(holdfix_net_0)
   );
 endmodule

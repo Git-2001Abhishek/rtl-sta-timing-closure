@@ -3761,6 +3761,80 @@ module dot2_v4(clk, rst_n, in_valid, a, b, c, d, out_valid, y);
   wire \d_q[7] ;
   wire \d_q[8] ;
   wire \d_q[9] ;
+  wire holdfix_net_0;
+  wire holdfix_net_1;
+  wire holdfix_net_10;
+  wire holdfix_net_11;
+  wire holdfix_net_12;
+  wire holdfix_net_13;
+  wire holdfix_net_14;
+  wire holdfix_net_15;
+  wire holdfix_net_16;
+  wire holdfix_net_17;
+  wire holdfix_net_18;
+  wire holdfix_net_19;
+  wire holdfix_net_2;
+  wire holdfix_net_20;
+  wire holdfix_net_21;
+  wire holdfix_net_22;
+  wire holdfix_net_23;
+  wire holdfix_net_24;
+  wire holdfix_net_25;
+  wire holdfix_net_26;
+  wire holdfix_net_27;
+  wire holdfix_net_28;
+  wire holdfix_net_29;
+  wire holdfix_net_3;
+  wire holdfix_net_30;
+  wire holdfix_net_31;
+  wire holdfix_net_32;
+  wire holdfix_net_33;
+  wire holdfix_net_34;
+  wire holdfix_net_35;
+  wire holdfix_net_36;
+  wire holdfix_net_37;
+  wire holdfix_net_38;
+  wire holdfix_net_39;
+  wire holdfix_net_4;
+  wire holdfix_net_40;
+  wire holdfix_net_41;
+  wire holdfix_net_42;
+  wire holdfix_net_43;
+  wire holdfix_net_44;
+  wire holdfix_net_45;
+  wire holdfix_net_46;
+  wire holdfix_net_47;
+  wire holdfix_net_48;
+  wire holdfix_net_49;
+  wire holdfix_net_5;
+  wire holdfix_net_50;
+  wire holdfix_net_51;
+  wire holdfix_net_52;
+  wire holdfix_net_53;
+  wire holdfix_net_54;
+  wire holdfix_net_55;
+  wire holdfix_net_56;
+  wire holdfix_net_57;
+  wire holdfix_net_58;
+  wire holdfix_net_59;
+  wire holdfix_net_6;
+  wire holdfix_net_60;
+  wire holdfix_net_61;
+  wire holdfix_net_62;
+  wire holdfix_net_63;
+  wire holdfix_net_64;
+  wire holdfix_net_65;
+  wire holdfix_net_66;
+  wire holdfix_net_67;
+  wire holdfix_net_68;
+  wire holdfix_net_69;
+  wire holdfix_net_7;
+  wire holdfix_net_70;
+  wire holdfix_net_71;
+  wire holdfix_net_72;
+  wire holdfix_net_73;
+  wire holdfix_net_8;
+  wire holdfix_net_9;
   wire \vld[0] ;
   wire \vld[1] ;
   wire \vld[2] ;
@@ -19449,28 +19523,28 @@ module dot2_v4(clk, rst_n, in_valid, a, b, c, d, out_valid, y);
   );
   DFFR_X1 _6295_ (
     .CK(clk),
-    .D(\vld[0] ),
+    .D(holdfix_net_32),
     .Q(\vld[1] ),
     .QN(_3177_),
     .RN(rst_n)
   );
   DFFR_X1 _6296_ (
     .CK(clk),
-    .D(\vld[1] ),
+    .D(holdfix_net_33),
     .Q(\vld[2] ),
     .QN(_3176_),
     .RN(rst_n)
   );
   DFFR_X1 _6297_ (
     .CK(clk),
-    .D(\vld[2] ),
+    .D(holdfix_net_34),
     .Q(\vld[3] ),
     .QN(_3175_),
     .RN(rst_n)
   );
   DFFR_X1 _6298_ (
     .CK(clk),
-    .D(\vld[3] ),
+    .D(holdfix_net_35),
     .Q(out_valid),
     .QN(_3189_),
     .RN(rst_n)
@@ -19675,49 +19749,49 @@ module dot2_v4(clk, rst_n, in_valid, a, b, c, d, out_valid, y);
   );
   DFF_X1 _6332_ (
     .CK(clk),
-    .D(\ab_pair_q[0][0] ),
+    .D(holdfix_net_42),
     .Q(\ab_q[0] ),
     .QN(_3142_)
   );
   DFF_X1 _6333_ (
     .CK(clk),
-    .D(\ab_pair_q[0][1] ),
+    .D(holdfix_net_43),
     .Q(\ab_q[1] ),
     .QN(_3141_)
   );
   DFF_X1 _6334_ (
     .CK(clk),
-    .D(\ab_pair_q[0][2] ),
+    .D(holdfix_net_44),
     .Q(\ab_q[2] ),
     .QN(_3140_)
   );
   DFF_X1 _6335_ (
     .CK(clk),
-    .D(\ab_pair_q[0][3] ),
+    .D(holdfix_net_45),
     .Q(\ab_q[3] ),
     .QN(_3139_)
   );
   DFF_X1 _6336_ (
     .CK(clk),
-    .D(\ab_pair_q[0][4] ),
+    .D(holdfix_net_46),
     .Q(\ab_q[4] ),
     .QN(_3138_)
   );
   DFF_X1 _6337_ (
     .CK(clk),
-    .D(\ab_pair_q[0][5] ),
+    .D(holdfix_net_47),
     .Q(\ab_q[5] ),
     .QN(_3137_)
   );
   DFF_X1 _6338_ (
     .CK(clk),
-    .D(\ab_pair_q[0][6] ),
+    .D(holdfix_net_48),
     .Q(\ab_q[6] ),
     .QN(_3136_)
   );
   DFF_X1 _6339_ (
     .CK(clk),
-    .D(\ab_pair_q[0][7] ),
+    .D(holdfix_net_49),
     .Q(\ab_q[7] ),
     .QN(_3135_)
   );
@@ -19861,55 +19935,55 @@ module dot2_v4(clk, rst_n, in_valid, a, b, c, d, out_valid, y);
   );
   DFF_X1 _6363_ (
     .CK(clk),
-    .D(_2687_),
+    .D(holdfix_net_37),
     .Q(\ab_q[31] ),
     .QN(_3187_)
   );
   DFF_X1 _6364_ (
     .CK(clk),
-    .D(\cd_pair_q[0][0] ),
+    .D(holdfix_net_50),
     .Q(\cd_q[0] ),
     .QN(_3111_)
   );
   DFF_X1 _6365_ (
     .CK(clk),
-    .D(\cd_pair_q[0][1] ),
+    .D(holdfix_net_51),
     .Q(\cd_q[1] ),
     .QN(_3110_)
   );
   DFF_X1 _6366_ (
     .CK(clk),
-    .D(\cd_pair_q[0][2] ),
+    .D(holdfix_net_52),
     .Q(\cd_q[2] ),
     .QN(_3109_)
   );
   DFF_X1 _6367_ (
     .CK(clk),
-    .D(\cd_pair_q[0][3] ),
+    .D(holdfix_net_53),
     .Q(\cd_q[3] ),
     .QN(_3108_)
   );
   DFF_X1 _6368_ (
     .CK(clk),
-    .D(\cd_pair_q[0][4] ),
+    .D(holdfix_net_54),
     .Q(\cd_q[4] ),
     .QN(_3107_)
   );
   DFF_X1 _6369_ (
     .CK(clk),
-    .D(\cd_pair_q[0][5] ),
+    .D(holdfix_net_55),
     .Q(\cd_q[5] ),
     .QN(_3106_)
   );
   DFF_X1 _6370_ (
     .CK(clk),
-    .D(\cd_pair_q[0][6] ),
+    .D(holdfix_net_56),
     .Q(\cd_q[6] ),
     .QN(_3105_)
   );
   DFF_X1 _6371_ (
     .CK(clk),
-    .D(\cd_pair_q[0][7] ),
+    .D(holdfix_net_57),
     .Q(\cd_q[7] ),
     .QN(_3104_)
   );
@@ -20053,31 +20127,31 @@ module dot2_v4(clk, rst_n, in_valid, a, b, c, d, out_valid, y);
   );
   DFF_X1 _6395_ (
     .CK(clk),
-    .D(_2663_),
+    .D(holdfix_net_38),
     .Q(\cd_q[31] ),
     .QN(_3186_)
   );
   DFF_X1 _6396_ (
     .CK(clk),
-    .D(\ab_pp_q[0][0] ),
+    .D(holdfix_net_58),
     .Q(\ab_pair_q[0][0] ),
     .QN(_3080_)
   );
   DFF_X1 _6397_ (
     .CK(clk),
-    .D(\ab_pp_q[0][1] ),
+    .D(holdfix_net_59),
     .Q(\ab_pair_q[0][1] ),
     .QN(_3079_)
   );
   DFF_X1 _6398_ (
     .CK(clk),
-    .D(\ab_pp_q[0][2] ),
+    .D(holdfix_net_60),
     .Q(\ab_pair_q[0][2] ),
     .QN(_3078_)
   );
   DFF_X1 _6399_ (
     .CK(clk),
-    .D(\ab_pp_q[0][3] ),
+    .D(holdfix_net_61),
     .Q(\ab_pair_q[0][3] ),
     .QN(_3077_)
   );
@@ -20197,31 +20271,31 @@ module dot2_v4(clk, rst_n, in_valid, a, b, c, d, out_valid, y);
   );
   DFF_X1 _6419_ (
     .CK(clk),
-    .D(_2766_),
+    .D(holdfix_net_39),
     .Q(\ab_pair_q[0][23] ),
     .QN(_3184_)
   );
   DFF_X1 _6420_ (
     .CK(clk),
-    .D(\ab_pp_q[2][0] ),
+    .D(holdfix_net_62),
     .Q(\ab_pair_q[1][0] ),
     .QN(_3057_)
   );
   DFF_X1 _6421_ (
     .CK(clk),
-    .D(\ab_pp_q[2][1] ),
+    .D(holdfix_net_63),
     .Q(\ab_pair_q[1][1] ),
     .QN(_3056_)
   );
   DFF_X1 _6422_ (
     .CK(clk),
-    .D(\ab_pp_q[2][2] ),
+    .D(holdfix_net_64),
     .Q(\ab_pair_q[1][2] ),
     .QN(_3055_)
   );
   DFF_X1 _6423_ (
     .CK(clk),
-    .D(\ab_pp_q[2][3] ),
+    .D(holdfix_net_65),
     .Q(\ab_pair_q[1][3] ),
     .QN(_3054_)
   );
@@ -20341,31 +20415,31 @@ module dot2_v4(clk, rst_n, in_valid, a, b, c, d, out_valid, y);
   );
   DFF_X1 _6443_ (
     .CK(clk),
-    .D(_2726_),
+    .D(holdfix_net_36),
     .Q(\ab_pair_q[1][23] ),
     .QN(_3183_)
   );
   DFF_X1 _6444_ (
     .CK(clk),
-    .D(\cd_pp_q[0][0] ),
+    .D(holdfix_net_66),
     .Q(\cd_pair_q[0][0] ),
     .QN(_3034_)
   );
   DFF_X1 _6445_ (
     .CK(clk),
-    .D(\cd_pp_q[0][1] ),
+    .D(holdfix_net_67),
     .Q(\cd_pair_q[0][1] ),
     .QN(_3033_)
   );
   DFF_X1 _6446_ (
     .CK(clk),
-    .D(\cd_pp_q[0][2] ),
+    .D(holdfix_net_68),
     .Q(\cd_pair_q[0][2] ),
     .QN(_3032_)
   );
   DFF_X1 _6447_ (
     .CK(clk),
-    .D(\cd_pp_q[0][3] ),
+    .D(holdfix_net_69),
     .Q(\cd_pair_q[0][3] ),
     .QN(_3031_)
   );
@@ -20485,31 +20559,31 @@ module dot2_v4(clk, rst_n, in_valid, a, b, c, d, out_valid, y);
   );
   DFF_X1 _6467_ (
     .CK(clk),
-    .D(_2746_),
+    .D(holdfix_net_40),
     .Q(\cd_pair_q[0][23] ),
     .QN(_3182_)
   );
   DFF_X1 _6468_ (
     .CK(clk),
-    .D(\cd_pp_q[2][0] ),
+    .D(holdfix_net_70),
     .Q(\cd_pair_q[1][0] ),
     .QN(_3011_)
   );
   DFF_X1 _6469_ (
     .CK(clk),
-    .D(\cd_pp_q[2][1] ),
+    .D(holdfix_net_71),
     .Q(\cd_pair_q[1][1] ),
     .QN(_3010_)
   );
   DFF_X1 _6470_ (
     .CK(clk),
-    .D(\cd_pp_q[2][2] ),
+    .D(holdfix_net_72),
     .Q(\cd_pair_q[1][2] ),
     .QN(_3009_)
   );
   DFF_X1 _6471_ (
     .CK(clk),
-    .D(\cd_pp_q[2][3] ),
+    .D(holdfix_net_73),
     .Q(\cd_pair_q[1][3] ),
     .QN(_3008_)
   );
@@ -20629,7 +20703,7 @@ module dot2_v4(clk, rst_n, in_valid, a, b, c, d, out_valid, y);
   );
   DFF_X1 _6491_ (
     .CK(clk),
-    .D(_2706_),
+    .D(holdfix_net_41),
     .Q(\cd_pair_q[1][23] ),
     .QN(_3181_)
   );
@@ -21976,5 +22050,301 @@ module dot2_v4(clk, rst_n, in_valid, a, b, c, d, out_valid, y);
     .D(d[15]),
     .Q(\d_q[15] ),
     .QN(_3190_)
+  );
+  BUF_X1 holdfix_buf_0 (
+    .A(\ab_pair_q[0][0] ),
+    .Z(holdfix_net_0)
+  );
+  BUF_X1 holdfix_buf_1 (
+    .A(\ab_pair_q[0][1] ),
+    .Z(holdfix_net_1)
+  );
+  BUF_X1 holdfix_buf_10 (
+    .A(\cd_pair_q[0][2] ),
+    .Z(holdfix_net_10)
+  );
+  BUF_X1 holdfix_buf_11 (
+    .A(\cd_pair_q[0][3] ),
+    .Z(holdfix_net_11)
+  );
+  BUF_X1 holdfix_buf_12 (
+    .A(\cd_pair_q[0][4] ),
+    .Z(holdfix_net_12)
+  );
+  BUF_X1 holdfix_buf_13 (
+    .A(\cd_pair_q[0][5] ),
+    .Z(holdfix_net_13)
+  );
+  BUF_X1 holdfix_buf_14 (
+    .A(\cd_pair_q[0][6] ),
+    .Z(holdfix_net_14)
+  );
+  BUF_X1 holdfix_buf_15 (
+    .A(\cd_pair_q[0][7] ),
+    .Z(holdfix_net_15)
+  );
+  BUF_X1 holdfix_buf_16 (
+    .A(\ab_pp_q[0][0] ),
+    .Z(holdfix_net_16)
+  );
+  BUF_X1 holdfix_buf_17 (
+    .A(\ab_pp_q[0][1] ),
+    .Z(holdfix_net_17)
+  );
+  BUF_X1 holdfix_buf_18 (
+    .A(\ab_pp_q[0][2] ),
+    .Z(holdfix_net_18)
+  );
+  BUF_X1 holdfix_buf_19 (
+    .A(\ab_pp_q[0][3] ),
+    .Z(holdfix_net_19)
+  );
+  BUF_X1 holdfix_buf_2 (
+    .A(\ab_pair_q[0][2] ),
+    .Z(holdfix_net_2)
+  );
+  BUF_X1 holdfix_buf_20 (
+    .A(\ab_pp_q[2][0] ),
+    .Z(holdfix_net_20)
+  );
+  BUF_X1 holdfix_buf_21 (
+    .A(\ab_pp_q[2][1] ),
+    .Z(holdfix_net_21)
+  );
+  BUF_X1 holdfix_buf_22 (
+    .A(\ab_pp_q[2][2] ),
+    .Z(holdfix_net_22)
+  );
+  BUF_X1 holdfix_buf_23 (
+    .A(\ab_pp_q[2][3] ),
+    .Z(holdfix_net_23)
+  );
+  BUF_X1 holdfix_buf_24 (
+    .A(\cd_pp_q[0][0] ),
+    .Z(holdfix_net_24)
+  );
+  BUF_X1 holdfix_buf_25 (
+    .A(\cd_pp_q[0][1] ),
+    .Z(holdfix_net_25)
+  );
+  BUF_X1 holdfix_buf_26 (
+    .A(\cd_pp_q[0][2] ),
+    .Z(holdfix_net_26)
+  );
+  BUF_X1 holdfix_buf_27 (
+    .A(\cd_pp_q[0][3] ),
+    .Z(holdfix_net_27)
+  );
+  BUF_X1 holdfix_buf_28 (
+    .A(\cd_pp_q[2][0] ),
+    .Z(holdfix_net_28)
+  );
+  BUF_X1 holdfix_buf_29 (
+    .A(\cd_pp_q[2][1] ),
+    .Z(holdfix_net_29)
+  );
+  BUF_X1 holdfix_buf_3 (
+    .A(\ab_pair_q[0][3] ),
+    .Z(holdfix_net_3)
+  );
+  BUF_X1 holdfix_buf_30 (
+    .A(\cd_pp_q[2][2] ),
+    .Z(holdfix_net_30)
+  );
+  BUF_X1 holdfix_buf_31 (
+    .A(\cd_pp_q[2][3] ),
+    .Z(holdfix_net_31)
+  );
+  BUF_X1 holdfix_buf_32 (
+    .A(\vld[0] ),
+    .Z(holdfix_net_32)
+  );
+  BUF_X1 holdfix_buf_33 (
+    .A(\vld[1] ),
+    .Z(holdfix_net_33)
+  );
+  BUF_X1 holdfix_buf_34 (
+    .A(\vld[2] ),
+    .Z(holdfix_net_34)
+  );
+  BUF_X1 holdfix_buf_35 (
+    .A(\vld[3] ),
+    .Z(holdfix_net_35)
+  );
+  BUF_X1 holdfix_buf_36 (
+    .A(_2726_),
+    .Z(holdfix_net_36)
+  );
+  BUF_X1 holdfix_buf_37 (
+    .A(_2687_),
+    .Z(holdfix_net_37)
+  );
+  BUF_X1 holdfix_buf_38 (
+    .A(_2663_),
+    .Z(holdfix_net_38)
+  );
+  BUF_X1 holdfix_buf_39 (
+    .A(_2766_),
+    .Z(holdfix_net_39)
+  );
+  BUF_X1 holdfix_buf_4 (
+    .A(\ab_pair_q[0][4] ),
+    .Z(holdfix_net_4)
+  );
+  BUF_X1 holdfix_buf_40 (
+    .A(_2746_),
+    .Z(holdfix_net_40)
+  );
+  BUF_X1 holdfix_buf_41 (
+    .A(_2706_),
+    .Z(holdfix_net_41)
+  );
+  BUF_X1 holdfix_buf_42 (
+    .A(holdfix_net_0),
+    .Z(holdfix_net_42)
+  );
+  BUF_X1 holdfix_buf_43 (
+    .A(holdfix_net_1),
+    .Z(holdfix_net_43)
+  );
+  BUF_X1 holdfix_buf_44 (
+    .A(holdfix_net_2),
+    .Z(holdfix_net_44)
+  );
+  BUF_X1 holdfix_buf_45 (
+    .A(holdfix_net_3),
+    .Z(holdfix_net_45)
+  );
+  BUF_X1 holdfix_buf_46 (
+    .A(holdfix_net_4),
+    .Z(holdfix_net_46)
+  );
+  BUF_X1 holdfix_buf_47 (
+    .A(holdfix_net_5),
+    .Z(holdfix_net_47)
+  );
+  BUF_X1 holdfix_buf_48 (
+    .A(holdfix_net_6),
+    .Z(holdfix_net_48)
+  );
+  BUF_X1 holdfix_buf_49 (
+    .A(holdfix_net_7),
+    .Z(holdfix_net_49)
+  );
+  BUF_X1 holdfix_buf_5 (
+    .A(\ab_pair_q[0][5] ),
+    .Z(holdfix_net_5)
+  );
+  BUF_X1 holdfix_buf_50 (
+    .A(holdfix_net_8),
+    .Z(holdfix_net_50)
+  );
+  BUF_X1 holdfix_buf_51 (
+    .A(holdfix_net_9),
+    .Z(holdfix_net_51)
+  );
+  BUF_X1 holdfix_buf_52 (
+    .A(holdfix_net_10),
+    .Z(holdfix_net_52)
+  );
+  BUF_X1 holdfix_buf_53 (
+    .A(holdfix_net_11),
+    .Z(holdfix_net_53)
+  );
+  BUF_X1 holdfix_buf_54 (
+    .A(holdfix_net_12),
+    .Z(holdfix_net_54)
+  );
+  BUF_X1 holdfix_buf_55 (
+    .A(holdfix_net_13),
+    .Z(holdfix_net_55)
+  );
+  BUF_X1 holdfix_buf_56 (
+    .A(holdfix_net_14),
+    .Z(holdfix_net_56)
+  );
+  BUF_X1 holdfix_buf_57 (
+    .A(holdfix_net_15),
+    .Z(holdfix_net_57)
+  );
+  BUF_X1 holdfix_buf_58 (
+    .A(holdfix_net_16),
+    .Z(holdfix_net_58)
+  );
+  BUF_X1 holdfix_buf_59 (
+    .A(holdfix_net_17),
+    .Z(holdfix_net_59)
+  );
+  BUF_X1 holdfix_buf_6 (
+    .A(\ab_pair_q[0][6] ),
+    .Z(holdfix_net_6)
+  );
+  BUF_X1 holdfix_buf_60 (
+    .A(holdfix_net_18),
+    .Z(holdfix_net_60)
+  );
+  BUF_X1 holdfix_buf_61 (
+    .A(holdfix_net_19),
+    .Z(holdfix_net_61)
+  );
+  BUF_X1 holdfix_buf_62 (
+    .A(holdfix_net_20),
+    .Z(holdfix_net_62)
+  );
+  BUF_X1 holdfix_buf_63 (
+    .A(holdfix_net_21),
+    .Z(holdfix_net_63)
+  );
+  BUF_X1 holdfix_buf_64 (
+    .A(holdfix_net_22),
+    .Z(holdfix_net_64)
+  );
+  BUF_X1 holdfix_buf_65 (
+    .A(holdfix_net_23),
+    .Z(holdfix_net_65)
+  );
+  BUF_X1 holdfix_buf_66 (
+    .A(holdfix_net_24),
+    .Z(holdfix_net_66)
+  );
+  BUF_X1 holdfix_buf_67 (
+    .A(holdfix_net_25),
+    .Z(holdfix_net_67)
+  );
+  BUF_X1 holdfix_buf_68 (
+    .A(holdfix_net_26),
+    .Z(holdfix_net_68)
+  );
+  BUF_X1 holdfix_buf_69 (
+    .A(holdfix_net_27),
+    .Z(holdfix_net_69)
+  );
+  BUF_X1 holdfix_buf_7 (
+    .A(\ab_pair_q[0][7] ),
+    .Z(holdfix_net_7)
+  );
+  BUF_X1 holdfix_buf_70 (
+    .A(holdfix_net_28),
+    .Z(holdfix_net_70)
+  );
+  BUF_X1 holdfix_buf_71 (
+    .A(holdfix_net_29),
+    .Z(holdfix_net_71)
+  );
+  BUF_X1 holdfix_buf_72 (
+    .A(holdfix_net_30),
+    .Z(holdfix_net_72)
+  );
+  BUF_X1 holdfix_buf_73 (
+    .A(holdfix_net_31),
+    .Z(holdfix_net_73)
+  );
+  BUF_X1 holdfix_buf_8 (
+    .A(\cd_pair_q[0][0] ),
+    .Z(holdfix_net_8)
+  );
+  BUF_X1 holdfix_buf_9 (
+    .A(\cd_pair_q[0][1] ),
+    .Z(holdfix_net_9)
   );
 endmodule

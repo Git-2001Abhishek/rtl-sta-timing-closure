@@ -6,3 +6,4 @@ build/
 results/dot2_v*/*.json
 results/dot2_v*/area.rpt
 __pycache__/
+.pytest_cache/

@@ -1,24 +1,25 @@
 
-11. Printing statistics.
+2. Printing statistics.
 
 === dot2_v3 ===
 
         +----------Local Count, excluding submodules.
         |        +-Local Area, excluding submodules.
         |        | 
-     3496        - wires
-     3588        - wire bits
-      236        - public wires
-      328        - public wire bits
+     3535        - wires
+     3627        - wire bits
+      275        - public wires
+      367        - public wire bits
         9        - ports
       101        - port bits
-     3260  4536.63 cells
+     3299 4.57E+03 cells
       190   202.16   AND2_X1
        85   113.05   AND3_X1
         1    1.596   AND4_X1
         7     9.31   AOI211_X1
       302  321.328   AOI21_X1
        29    38.57   AOI22_X1
+       39   31.122   BUF_X1
         4    21.28   DFFR_X1
       257 1.16E+03   DFF_X1
       150     79.8   INV_X1
@@ -36,6 +37,6 @@
       396  632.016   XNOR2_X1
       376  600.096   XOR2_X1
 
-   Chip area for module '\dot2_v3': 4536.630000
-     of which used for sequential elements: 1183.434000 (26.09%)
+   Chip area for module '\dot2_v3': 4567.752000
+     of which used for sequential elements: 1183.434000 (25.91%)
 

@@ -3646,6 +3646,17 @@ module dot2_v5(clk, rst_n, in_valid, a, b, c, d, out_valid, y);
   wire \g_level[5].g_csa[0].x0[0] ;
   wire \g_level[6].g_csa[0].x0[1] ;
   wire \g_level[7].g_csa[0].x0[2] ;
+  wire holdfix_net_0;
+  wire holdfix_net_1;
+  wire holdfix_net_10;
+  wire holdfix_net_2;
+  wire holdfix_net_3;
+  wire holdfix_net_4;
+  wire holdfix_net_5;
+  wire holdfix_net_6;
+  wire holdfix_net_7;
+  wire holdfix_net_8;
+  wire holdfix_net_9;
   wire \rows[4228] ;
   wire \rows[4229] ;
   wire \rows[4230] ;
@@ -22485,46 +22496,46 @@ module dot2_v5(clk, rst_n, in_valid, a, b, c, d, out_valid, y);
   );
   DFFR_X1 _6775_ (
     .CK(clk),
-    .D(\vld[0] ),
+    .D(holdfix_net_4),
     .Q(\vld[1] ),
     .QN(_3115_),
     .RN(rst_n)
   );
   DFFR_X1 _6776_ (
     .CK(clk),
-    .D(\vld[1] ),
+    .D(holdfix_net_5),
     .Q(\vld[2] ),
     .QN(_3114_),
     .RN(rst_n)
   );
   DFFR_X1 _6777_ (
     .CK(clk),
-    .D(\vld[2] ),
+    .D(holdfix_net_6),
     .Q(out_valid),
     .QN(_3318_),
     .RN(rst_n)
   );
   DFF_X1 _6778_ (
     .CK(clk),
-    .D(\s_q[0] ),
+    .D(holdfix_net_7),
     .Q(y[0]),
     .QN(_3113_)
   );
   DFF_X1 _6779_ (
     .CK(clk),
-    .D(\s_q[1] ),
+    .D(holdfix_net_8),
     .Q(y[1]),
     .QN(_3112_)
   );
   DFF_X1 _6780_ (
     .CK(clk),
-    .D(\s_q[2] ),
+    .D(holdfix_net_9),
     .Q(y[2]),
     .QN(_3111_)
   );
   DFF_X1 _6781_ (
     .CK(clk),
-    .D(\s_q[3] ),
+    .D(holdfix_net_10),
     .Q(y[3]),
     .QN(_3110_)
   );
@@ -23283,5 +23294,49 @@ module dot2_v5(clk, rst_n, in_valid, a, b, c, d, out_valid, y);
     .D(d[15]),
     .Q(\d_q[15] ),
     .QN(_3317_)
+  );
+  BUF_X1 holdfix_buf_0 (
+    .A(\s_q[0] ),
+    .Z(holdfix_net_0)
+  );
+  BUF_X1 holdfix_buf_1 (
+    .A(\s_q[1] ),
+    .Z(holdfix_net_1)
+  );
+  BUF_X1 holdfix_buf_10 (
+    .A(holdfix_net_3),
+    .Z(holdfix_net_10)
+  );
+  BUF_X1 holdfix_buf_2 (
+    .A(\s_q[2] ),
+    .Z(holdfix_net_2)
+  );
+  BUF_X1 holdfix_buf_3 (
+    .A(\s_q[3] ),
+    .Z(holdfix_net_3)
+  );
+  BUF_X1 holdfix_buf_4 (
+    .A(\vld[0] ),
+    .Z(holdfix_net_4)
+  );
+  BUF_X1 holdfix_buf_5 (
+    .A(\vld[1] ),
+    .Z(holdfix_net_5)
+  );
+  BUF_X1 holdfix_buf_6 (
+    .A(\vld[2] ),
+    .Z(holdfix_net_6)
+  );
+  BUF_X1 holdfix_buf_7 (
+    .A(holdfix_net_0),
+    .Z(holdfix_net_7)
+  );
+  BUF_X1 holdfix_buf_8 (
+    .A(holdfix_net_1),
+    .Z(holdfix_net_8)
+  );
+  BUF_X1 holdfix_buf_9 (
+    .A(holdfix_net_2),
+    .Z(holdfix_net_9)
   );
 endmodule

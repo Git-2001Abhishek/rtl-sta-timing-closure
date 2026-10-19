@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  flow:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install matplotlib pytest
+      - uses: YosysHQ/setup-oss-cad-suite@v3
+      - name: Download NanGate45 libraries
+        run: make lib PYTHON=python
+      - name: STA engine unit tests
+        run: make test PYTHON=python
+      - name: Lint (Verilator -Wall)
+        run: make lint
+      - name: RTL simulation
+        run: make sim
+      - name: Synthesis + hold fix + multi-corner STA
+        run: make flow PYTHON=python
+      - name: Gate-level simulation
+        run: make gls PYTHON=python
+      - name: Summary
+        run: cat reports/summary.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: flow-results
+          path: |
+            reports/
+            results/
+
+  # Cross-check the committed netlists with OpenSTA (bundled in OpenROAD).
+  # Non-blocking: the comparison table lands in the job summary; a
+  # difference above the tolerance marks this job failed without failing CI.
+  opensta:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Download NanGate45 libraries
+        run: make lib PYTHON=python
+      - name: Run OpenSTA (openroad/orfs image)
+        run: |
+          docker run --rm -v "$PWD:/work" -w /work openroad/orfs:latest bash -c '
+            OR=$(command -v openroad || find / -name openroad -type f -perm -u+x 2>/dev/null | head -n 1)
+            echo "using $OR"
+            for d in dot2_v1 dot2_v2 dot2_v3 dot2_v4 dot2_v5; do
+              DESIGN=$d "$OR" -exit scripts/sta.tcl
+            done'
+      - name: Compare with sta.py
+        run: python scripts/compare_opensta.py | tee -a "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: opensta-reports
+          path: reports/*_opensta.rpt

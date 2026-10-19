@@ -1,18 +1,18 @@
 
-12. Printing statistics.
+2. Printing statistics.
 
 === dot2_v5 ===
 
         +----------Local Count, excluding submodules.
         |        +-Local Area, excluding submodules.
         |        | 
-     3894        - wires
-     3986        - wire bits
-      571        - public wires
-      663        - public wire bits
+     3905        - wires
+     3997        - wire bits
+      582        - public wires
+      674        - public wire bits
         9        - ports
       101        - port bits
-     3585 5.14E+03 cells
+     3596 5.15E+03 cells
       176  187.264   AND2_X1
        44    58.52   AND3_X1
       120   191.52   AND4_X1
@@ -20,6 +20,7 @@
       206  219.184   AOI21_X1
         1    1.596   AOI221_X1
       141   187.53   AOI22_X1
+       11    8.778   BUF_X1
         4    21.28   DFFR_X1
       330  1492.26   DFF_X1
       133   70.756   INV_X1
@@ -40,6 +41,6 @@
       461  735.756   XNOR2_X1
       299  477.204   XOR2_X1
 
-   Chip area for module '\dot2_v5': 5142.046000
-     of which used for sequential elements: 1513.540000 (29.43%)
+   Chip area for module '\dot2_v5': 5150.824000
+     of which used for sequential elements: 1513.540000 (29.38%)
 

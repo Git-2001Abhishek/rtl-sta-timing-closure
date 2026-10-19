@@ -1,0 +1,5 @@
+dot2_v1: iteration 1: worst hold slack +0.0154 ns, 0 pins below 0.010 ns margin, 1 buffers so far
+dot2_v2: iteration 1: worst hold slack +0.0109 ns, 0 pins below 0.010 ns margin, 2 buffers so far
+dot2_v3: iteration 2: worst hold slack +0.0109 ns, 0 pins below 0.010 ns margin, 39 buffers so far
+dot2_v4: iteration 2: worst hold slack +0.0109 ns, 0 pins below 0.010 ns margin, 76 buffers so far
+dot2_v5: iteration 2: worst hold slack +0.0109 ns, 0 pins below 0.010 ns margin, 11 buffers so far

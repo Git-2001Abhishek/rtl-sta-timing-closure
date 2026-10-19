@@ -2,14 +2,14 @@
 Static timing report  -  design dot2_v1
 library  : NangateOpenCellLibrary (nangate45_typ.lib)   wire load: 5K_hvratio_1_1
 clock    : clk  period 1.000 ns  uncertainty 0.050 ns  transition 0.020 ns
-cells    : 3276  (99 sequential)
+cells    : 3277  (99 sequential)
 ==============================================================================
 
 Summary
 -------
 setup  WNS   -1.251 ns   TNS   -20.926 ns   violating endpoints 29 / 133
        worst setup slack -1.251 ns
-hold   WHS    0.035 ns                     violating endpoints 0 / 133
+hold   WHS    0.059 ns                     violating endpoints 0 / 133
 critical path data arrival 2.170 ns
 minimum clock period 2.251 ns  ->  Fmax 444.2 MHz
 
@@ -335,17 +335,20 @@ Path Type:  min
                        0.000    0.000   clock clk (rise edge)
                        0.000    0.000   clock network delay (ideal)
               0.020    0.000    0.000 ^ vld_reg[0]/CK (DFFR_X1)
-     1.44     0.007    0.092    0.092 v vld_reg[0]/Q (DFFR_X1)
+     1.28     0.006    0.091    0.091 v vld_reg[0]/Q (DFFR_X1)
                                           vld[0] (net)
-              0.007    0.000    0.092 v out_valid_reg/D (DFFR_X1)
-                                0.092   data arrival time
+              0.006    0.000    0.091 v holdfix_buf_0/A (BUF_X1)
+     1.44     0.005    0.025    0.116 v holdfix_buf_0/Z (BUF_X1)
+                                          holdfix_net_0 (net)
+              0.005    0.000    0.116 v out_valid_reg/D (DFFR_X1)
+                                0.116   data arrival time
 
                        0.000    0.000   clock clk (rise edge)
                        0.050    0.050   clock uncertainty
                        0.007    0.057   library hold time
                                 0.057   data required time
 ------------------------------------------------------------------------------
-                                0.035   slack (MET)
+                                0.059   slack (MET)
 
-logic depth: 0 gates
+logic depth: 1 gates
 

@@ -2,14 +2,14 @@
 Static timing report  -  design dot2_v2
 library  : NangateOpenCellLibrary (nangate45_typ.lib)   wire load: 5K_hvratio_1_1
 clock    : clk  period 1.000 ns  uncertainty 0.050 ns  transition 0.020 ns
-cells    : 3270  (164 sequential)
+cells    : 3272  (164 sequential)
 ==============================================================================
 
 Summary
 -------
 setup  WNS   -0.889 ns   TNS   -25.862 ns   violating endpoints 62 / 198
        worst setup slack -0.889 ns
-hold   WHS    0.035 ns                     violating endpoints 0 / 198
+hold   WHS    0.053 ns                     violating endpoints 0 / 198
 critical path data arrival 1.806 ns
 minimum clock period 1.889 ns  ->  Fmax 529.5 MHz
 
@@ -317,8 +317,8 @@ logic depth: 34 gates
 ==============================================================================
 Hold path 1
 ==============================================================================
-Startpoint: vld_reg[0]/CK (DFFR_X1)  (rising edge-triggered flip-flop clocked by clk)
-Endpoint:   vld_reg[1]/D (DFFR_X1)  (rising edge-triggered flip-flop clocked by clk)
+Startpoint: ab_q_reg[0]/CK (DFF_X1)  (rising edge-triggered flip-flop clocked by clk)
+Endpoint:   y_reg[0]/D (DFF_X1)  (rising edge-triggered flip-flop clocked by clk)
 Path Group: clk
 Path Type:  min
 
@@ -326,18 +326,20 @@ Path Type:  min
 ------------------------------------------------------------------------------
                        0.000    0.000   clock clk (rise edge)
                        0.000    0.000   clock network delay (ideal)
-              0.020    0.000    0.000 ^ vld_reg[0]/CK (DFFR_X1)
-     1.44     0.007    0.092    0.092 v vld_reg[0]/Q (DFFR_X1)
-                                          vld[0] (net)
-              0.007    0.000    0.092 v vld_reg[1]/D (DFFR_X1)
-                                0.092   data arrival time
+              0.020    0.000    0.000 ^ ab_q_reg[0]/CK (DFF_X1)
+     4.53     0.009    0.092    0.092 v ab_q_reg[0]/Q (DFF_X1)
+                                          ab_q[0] (net)
+              0.009    0.000    0.092 v g3098/A (XOR2_X1)
+     1.45     0.018    0.025    0.117 ^ g3098/Z (XOR2_X1)
+              0.018    0.000    0.117 ^ y_reg[0]/D (DFF_X1)
+                                0.117   data arrival time
 
                        0.000    0.000   clock clk (rise edge)
                        0.050    0.050   clock uncertainty
-                       0.007    0.057   library hold time
-                                0.057   data required time
+                       0.014    0.064   library hold time
+                                0.064   data required time
 ------------------------------------------------------------------------------
-                                0.035   slack (MET)
+                                0.053   slack (MET)
 
-logic depth: 0 gates
+logic depth: 1 gates
 
