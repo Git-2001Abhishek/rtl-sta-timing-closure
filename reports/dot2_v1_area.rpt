@@ -1,0 +1,44 @@
+
+11. Printing statistics.
+
+=== dot2_v1 ===
+
+        +----------Local Count, excluding submodules.
+        |        +-Local Area, excluding submodules.
+        |        | 
+     3350        - wires
+     3442        - wire bits
+       74        - public wires
+      166        - public wire bits
+        9        - ports
+      101        - port bits
+     3276  3999.31 cells
+      181  192.584   AND2_X1
+      114   151.62   AND3_X1
+       19   30.324   AND4_X1
+        9    11.97   AOI211_X1
+      278  295.792   AOI21_X1
+       43    57.19   AOI22_X1
+        2    10.64   DFFR_X1
+       97  438.634   DFF_X1
+      191  101.612   INV_X1
+      579  462.042   NAND2_X1
+      100    106.4   NAND3_X1
+        9    11.97   NAND4_X1
+      362  288.876   NOR2_X1
+       29   30.856   NOR3_X1
+        2     2.66   NOR4_X1
+        8    10.64   OAI211_X1
+      228  242.592   OAI21_X1
+        2    3.192   OAI221_X1
+        5     6.65   OAI22_X1
+        4    7.448   OAI33_X1
+       96  102.144   OR2_X1
+      119   158.27   OR3_X1
+        1    1.596   OR4_X1
+      405   646.38   XNOR2_X1
+      393  627.228   XOR2_X1
+
+   Chip area for module '\dot2_v1': 3999.310000
+     of which used for sequential elements: 449.274000 (11.23%)
+

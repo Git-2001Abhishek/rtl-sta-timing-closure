@@ -1,0 +1,6 @@
+VCD info: dumpfile results/tb_dot2.vcd opened for output.
+--------------------------------------------------
+results checked: v1=3776 v2=3776 v3=3775 v4=3774 v5=3775
+TEST PASSED
+--------------------------------------------------
+tb/tb_dot2.sv:147: $finish called at 50220000 (1ps)

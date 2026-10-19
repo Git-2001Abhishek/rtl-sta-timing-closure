@@ -1,0 +1,8 @@
+lib/*.lib
+lib/*.gz
+build/
+*.vvp
+*.vcd
+results/dot2_v*/*.json
+results/dot2_v*/area.rpt
+__pycache__/

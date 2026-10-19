@@ -1,0 +1,25 @@
+# Yosys synthesis script for one datapath version.
+# run_flow.py substitutes {TOP}, {SOURCES}, {LIB}, {OUT} and {DELAY_PS} and
+# runs the result with `yosys -s`.
+
+read_liberty -lib {LIB}
+read_verilog -sv {SOURCES}
+# -noabc: skip synth's generic (area-oriented) ABC pass. It restructures the
+# Kogge-Stone prefix tree in dot2_v5 into a ripple-like chain; leaving all
+# technology mapping to the timing-driven liberty ABC run below keeps it.
+synth -top {TOP} -flatten {SYNTH_OPTS}
+
+# map flip-flops, then combinational logic, to NanGate45 cells
+dfflibmap -liberty {LIB}
+abc -D {DELAY_PS} -liberty {LIB}
+opt_clean
+
+# tie cells for constants, clean up
+hilomap -singleton -hicell LOGIC1_X1 Z -locell LOGIC0_X1 Z
+setundef -zero
+splitnets
+opt_clean -purge
+
+tee -o {OUT}/area.rpt stat -liberty {LIB}
+write_verilog -noattr -noexpr {OUT}/{TOP}_netlist.v
+write_json {OUT}/{TOP}_netlist.json
