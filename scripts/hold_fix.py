@@ -12,7 +12,7 @@ The fixed netlist is written as JSON; run_flow.py converts it to Verilog
 with Yosys for gate-level simulation.
 
 Usage
-  python scripts/hold_fix.py --lib-fast lib/nangate45_fast.lib \
+  python scripts/hold_fix.py --lib-fast liberty/nangate45_fast.lib \
       --netlist in.json --top dot2_v5 --sdc constraints/dot2.sdc \
       --out out.json [--buffer BUF_X1] [--max-iter 8]
 """

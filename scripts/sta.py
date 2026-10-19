@@ -25,7 +25,7 @@ This is the same analysis OpenSTA performs in wire-load mode for a simple
 single-clock design; see scripts/sta.tcl for the equivalent OpenSTA run.
 
 Usage
-  python scripts/sta.py --lib lib/nangate45_typ.lib --netlist n.json \
+  python scripts/sta.py --lib liberty/nangate45_typ.lib --netlist n.json \
       --top dot2_v1 --sdc constraints/dot2.sdc [--report out.rpt] [--paths 3]
 """
 import argparse

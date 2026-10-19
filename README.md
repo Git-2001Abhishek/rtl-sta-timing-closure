@@ -289,6 +289,6 @@ scripts/      - Synthesis, hold fix, STA, flow and helper scripts
 tests/        - Unit tests for the STA engine
 reports/      - Timing reports per corner, area, hold-fix log, summaries
 results/      - Final netlists, simulation logs, figures
-lib/          - Liberty files (downloaded, not committed)
+liberty/      - Liberty files (downloaded, not committed)
 .github/      - CI workflow (flow + OpenSTA cross-check)
 ```

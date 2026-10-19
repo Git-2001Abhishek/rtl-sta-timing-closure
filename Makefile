@@ -17,7 +17,7 @@ STA    ?= sta
 
 DESIGNS = dot2_v1 dot2_v2 dot2_v3 dot2_v4 dot2_v5
 RTL     = rtl/ks_adder.sv $(addprefix rtl/,$(addsuffix .sv,$(DESIGNS)))
-LIB     = lib/nangate45_typ.lib
+LIB     = liberty/nangate45_typ.lib
 
 .PHONY: all lib sim flow flow-default-synth gls opensta lint test clean
 

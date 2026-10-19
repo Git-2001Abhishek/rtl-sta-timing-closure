@@ -19,7 +19,7 @@ if {[info exists ::env(TECH_LEF)]} {
     read_lef $::env(TECH_LEF)
     read_lef $::env(MACRO_LEF)
 }
-read_liberty lib/nangate45_typ.lib
+read_liberty liberty/nangate45_typ.lib
 read_verilog results/$design/${design}_netlist.v
 link_design $design
 

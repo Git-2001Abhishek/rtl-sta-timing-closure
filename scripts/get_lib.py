@@ -2,7 +2,7 @@
 """Download the NanGate 45nm Liberty files (typical, slow and fast corners).
 
 The files come from the OpenSTA repository's examples and are unpacked to
-lib/nangate45_{typ,slow,fast}.lib (they are not committed to this repository).
+liberty/nangate45_{typ,slow,fast}.lib (they are not committed to this repository).
 """
 import gzip
 import os
@@ -14,9 +14,9 @@ CORNERS = ("typ", "slow", "fast")
 
 def main():
     root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    os.makedirs(os.path.join(root, "lib"), exist_ok=True)
+    os.makedirs(os.path.join(root, "liberty"), exist_ok=True)
     for corner in CORNERS:
-        dst = os.path.join(root, "lib", "nangate45_%s.lib" % corner)
+        dst = os.path.join(root, "liberty", "nangate45_%s.lib" % corner)
         if os.path.exists(dst):
             print("already present: " + dst)
             continue

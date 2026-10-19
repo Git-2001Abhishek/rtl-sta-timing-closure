@@ -34,7 +34,7 @@ DESIGNS = [
 ]
 # extra source files per design (besides rtl/<top>.sv)
 EXTRA_SOURCES = {"dot2_v5": ["rtl/ks_adder.sv"]}
-LIBS = {c: "lib/nangate45_%s.lib" % c for c in ("typ", "slow", "fast")}
+LIBS = {c: "liberty/nangate45_%s.lib" % c for c in ("typ", "slow", "fast")}
 SDC = "constraints/dot2.sdc"
 
 

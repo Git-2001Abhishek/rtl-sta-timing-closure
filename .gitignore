@@ -1,5 +1,5 @@
-lib/*.lib
-lib/*.gz
+liberty/*.lib
+liberty/*.gz
 build/
 *.vvp
 *.vcd

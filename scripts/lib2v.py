@@ -7,7 +7,7 @@ gate-level simulation of the synthesized netlists.
   * flip-flops: `ff` group with next_state / clocked_on / optional clear, preset
   * cells without a function (fillers, antenna, latches, ...) are skipped
 
-Usage: python scripts/lib2v.py lib/nangate45_typ.lib build/cells.v
+Usage: python scripts/lib2v.py liberty/nangate45_typ.lib build/cells.v
 """
 import os
 import sys

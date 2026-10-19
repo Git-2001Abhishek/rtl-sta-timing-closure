@@ -206,7 +206,7 @@ set_false_path -from [get_ports rst_n]
 
 
 # ------------------------------------------------- real library spot check
-NANGATE = os.path.join(ROOT, "lib", "nangate45_typ.lib")
+NANGATE = os.path.join(ROOT, "liberty", "nangate45_typ.lib")
 
 
 @pytest.mark.skipif(not os.path.exists(NANGATE), reason="run `make lib` first")
