@@ -14,9 +14,9 @@ import sys
 
 
 def opensta_slacks(path):
-    """report_worst_slack prints 'worst slack <value>' (max first, then min)."""
+    """report_worst_slack prints 'worst slack [max|min] <value>' (max first)."""
     text = open(path).read()
-    vals = [float(v) for v in re.findall(r"worst slack\s+(-?[\d.]+)", text)]
+    vals = [float(v) for v in re.findall(r"worst slack(?:\s+(?:max|min))?\s+(-?[\d.]+)", text)]
     if len(vals) < 2:
         return None, None
     return vals[0], vals[1]

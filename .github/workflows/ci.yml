@@ -18,11 +18,13 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install matplotlib pytest
+      # Synthesis uses a pinned Yosys (the exact release the committed results
+      # were produced with). OSS CAD Suite provides Icarus Verilog / Verilator.
+      - run: pip install matplotlib pytest yowasp-yosys==0.70.0.0.post1259
       - uses: YosysHQ/setup-oss-cad-suite@v3
       - name: Tool versions
         run: |
-          yosys -V || true; (iverilog -V 2>&1 | head -n 1) || true; verilator --version || true
+          yowasp-yosys -V || true; (iverilog -V 2>&1 | head -n 1) || true; verilator --version || true
       - name: Download NanGate45 libraries
         run: make lib PYTHON=python
       - name: STA engine unit tests
@@ -32,17 +34,19 @@ jobs:
       - name: RTL simulation
         run: mkdir -p build && make sim 2>&1 | tee build/step_sim.log
       - name: Synthesis + hold fix + multi-corner STA
-        run: make flow PYTHON=python 2>&1 | tee build/step_flow.log
+        run: make flow PYTHON=python YOSYS=yowasp-yosys 2>&1 | tee build/step_flow.log
       - name: Synthesis diagnostics
         if: always()
         run: |
-          { yosys -V; for d in dot2_v1 dot2_v5; do
+          { yowasp-yosys -V; for d in dot2_v1 dot2_v5; do
               echo "== $d"; grep -E "Warning|ERROR" build/${d}_yosys.log | sort | uniq -c | sort -rn | head -n 12
               grep -cE "DFF_X1|DFFR_X1" results/$d/${d}_netlist.v
             done; } > build/diag.log 2>&1 || true
           python scripts/ci_annotate.py --notice --lines 40 build/diag.log
       - name: Gate-level simulation
         run: make gls PYTHON=python 2>&1 | tee build/step_gls.log
+      - name: Results match the committed ones
+        run: git diff --stat --exit-code -- reports/summary.md "results/*/*_netlist.v"
       - name: Summary
         run: cat reports/summary.md >> "$GITHUB_STEP_SUMMARY"
       - name: Publish key results
