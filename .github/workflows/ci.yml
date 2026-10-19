@@ -4,6 +4,12 @@ on:
   push:
   pull_request:
 
+# Explicit bash so pipelines use pipefail (the implicit default shell does
+# not, which lets `make ... | tee` hide a failing make).
+defaults:
+  run:
+    shell: bash
+
 jobs:
   flow:
     runs-on: ubuntu-latest
@@ -27,6 +33,14 @@ jobs:
         run: mkdir -p build && make sim 2>&1 | tee build/step_sim.log
       - name: Synthesis + hold fix + multi-corner STA
         run: make flow PYTHON=python 2>&1 | tee build/step_flow.log
+      - name: Synthesis diagnostics
+        if: always()
+        run: |
+          { yosys -V; for d in dot2_v1 dot2_v5; do
+              echo "== $d"; grep -E "Warning|ERROR" build/${d}_yosys.log | sort | uniq -c | sort -rn | head -n 12
+              grep -cE "DFF_X1|DFFR_X1" results/$d/${d}_netlist.v
+            done; } > build/diag.log 2>&1 || true
+          python scripts/ci_annotate.py --notice --lines 40 build/diag.log
       - name: Gate-level simulation
         run: make gls PYTHON=python 2>&1 | tee build/step_gls.log
       - name: Summary
