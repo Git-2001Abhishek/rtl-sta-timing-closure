@@ -16,7 +16,7 @@ jobs:
       - uses: YosysHQ/setup-oss-cad-suite@v3
       - name: Tool versions
         run: |
-          yosys -V; iverilog -V | head -n 1; verilator --version
+          yosys -V || true; (iverilog -V 2>&1 | head -n 1) || true; verilator --version || true
       - name: Download NanGate45 libraries
         run: make lib PYTHON=python
       - name: STA engine unit tests
