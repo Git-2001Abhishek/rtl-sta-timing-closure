@@ -235,11 +235,23 @@ How it is validated:
 - **OpenSTA cross-check in CI**. The `opensta` job of
   [the CI workflow](.github/workflows/ci.yml) runs
   [`scripts/sta.tcl`](scripts/sta.tcl) on the committed netlists in the
-  `openroad/orfs` Docker image (OpenROAD embeds OpenSTA).
-  [`scripts/compare_opensta.py`](scripts/compare_opensta.py) then puts the
-  setup and hold slack from both tools side by side and flags any
-  difference above 50 ps (the job is non-blocking, so CI stays green). It could not be run on the Windows machine
-  this was developed on; the first CI run is the first real comparison.
+  `openroad/orfs` Docker image (OpenROAD embeds OpenSTA), with the same
+  library, wire-load model and SDC.
+  [`scripts/compare_opensta.py`](scripts/compare_opensta.py) puts the two
+  results side by side and flags any difference above 50 ps:
+
+  | Design | Setup slack sta.py | Setup slack OpenSTA | Diff | Hold slack sta.py | Hold slack OpenSTA |
+  | --- | --- | --- | --- | --- | --- |
+  | dot2_v1 | -1.251 | -1.228 | 23 ps | +0.059 | +0.059 |
+  | dot2_v2 | -0.974 | -0.947 | 27 ps | +0.053 | +0.052 |
+  | dot2_v3 | -0.592 | -0.572 | 20 ps | +0.053 | +0.052 |
+  | dot2_v4 | -0.402 | -0.388 | 14 ps | +0.053 | +0.052 |
+  | dot2_v5 | **+0.020** | **+0.034** | 14 ps | +0.053 | +0.052 |
+
+  The two tools agree to within **27 ps** on every design, and OpenSTA also
+  has v5 meeting 1 GHz. `sta.py` is consistently a little pessimistic on
+  setup (14–27 ps), most likely because it keeps the worst slew at each
+  node and OpenSTA doesn't.
 
 ## How to run
 
@@ -258,12 +270,17 @@ make opensta      # optional: OpenSTA cross-check (needs OpenSTA / OpenROAD)
 ```
 
 All of the above runs in GitHub Actions on every push
-([`.github/workflows/ci.yml`](.github/workflows/ci.yml)).
+([`.github/workflows/ci.yml`](.github/workflows/ci.yml)). CI synthesizes
+with the pinned `yowasp-yosys` 0.70 release used for the committed results
+and checks that the summary and netlists come out **byte-identical**. A newer
+development build of Yosys (0.70+157) wrote netlists with undriven outputs
+for this flow; the pin, an undriven-output check in `run_flow.py` and
+gate-level simulation in CI all guard against that.
 
 With `yowasp-yosys` instead of a native Yosys:
 
 ```bash
-pip install yowasp-yosys
+pip install yowasp-yosys==0.70.0.0.post1259   # version used for the committed results
 make flow YOSYS=yowasp-yosys
 ```
 
