@@ -48,6 +48,7 @@ module dot2_v5 #(
     endfunction
 
     // number of 3:2 levels needed to get down to two rows
+    /* verilator lint_off UNUSEDSIGNAL */   // Yosys needs an argument here
     function automatic integer levels_to_two(input integer dummy);
         integer n, k, l;
         begin
@@ -62,6 +63,7 @@ module dot2_v5 #(
             levels_to_two = l;
         end
     endfunction
+    /* verilator lint_on UNUSEDSIGNAL */
 
     localparam int LV    = levels_to_two(0);
     localparam int R_MID = rows_after(SPLIT);
@@ -81,8 +83,12 @@ module dot2_v5 #(
     localparam int LEVEL_BITS = NROWS * RW;
     `define ROW(l, r) (((l) * NROWS + (r)) * RW)
 
+    // Not every row slot of every level is used (the row count shrinks
+    // each level), so some bits of `rows` / `src` are intentionally unread.
+    /* verilator lint_off UNUSEDSIGNAL */
     logic [(LV+1)*LEVEL_BITS-1:0] rows;
-    logic [LEVEL_BITS-1:0]        mid_q;   // rows after SPLIT levels (registered)
+    /* verilator lint_on UNUSEDSIGNAL */
+    logic [R_MID*RW-1:0]          mid_q;   // the R_MID rows left after SPLIT levels
 
     genvar j, l, g, p;
     generate
@@ -97,9 +103,11 @@ module dot2_v5 #(
             localparam int G = N / 3;
 
             // level input: the previous level, or the mid registers
+            /* verilator lint_off UNUSEDSIGNAL */
             logic [LEVEL_BITS-1:0] src;
+            /* verilator lint_on UNUSEDSIGNAL */
             if (l == SPLIT) begin : g_from_reg
-                assign src = mid_q;
+                assign src = LEVEL_BITS'(mid_q);
             end else begin : g_from_comb
                 assign src = rows[`ROW(l, 0) +: LEVEL_BITS];
             end
@@ -125,7 +133,7 @@ module dot2_v5 #(
 
     // stage 1 -> 2: mid pipeline registers
     always_ff @(posedge clk) begin
-        mid_q <= rows[`ROW(SPLIT, 0) +: LEVEL_BITS];
+        mid_q <= rows[`ROW(SPLIT, 0) +: R_MID*RW];
     end
 
     // stage 2 -> 3: final sum / carry rows

@@ -10,9 +10,11 @@ set_clock_uncertainty 0.05 [get_clocks clk]
 set_clock_transition 0.02 [get_clocks clk]
 
 # Inputs come from registers in the same clock domain; outputs go to registers.
-set_input_delay  0.20 -clock clk [get_ports {in_valid a* b* c* d*}]
+# Ports are listed by name (a wildcard like c* would also match clk).
+set data_inputs [get_ports {in_valid a b c d}]
+set_input_delay  0.20 -clock clk $data_inputs
 set_output_delay 0.20 -clock clk [all_outputs]
-set_input_transition 0.02 [get_ports {in_valid a* b* c* d*}]
+set_input_transition 0.02 $data_inputs
 set_load 2.0 [all_outputs]
 
 # Asynchronous reset is not timed as a data path.

@@ -4,8 +4,10 @@
 #   DESIGN=dot2_v5 sta -exit scripts/sta.tcl
 #   (or: make opensta, which loops over all versions)
 #
-# Run from the repository root after `make synth` has produced the netlists.
+# Run from the repository root after `make flow` has produced the netlists.
 # Uses the same library, wire-load model and SDC as scripts/sta.py.
+# NOTE: written against the OpenSTA command reference but not run yet
+# (OpenSTA was not available on the Windows machine used for this project).
 # -----------------------------------------------------------------------------
 if {[info exists ::env(DESIGN)]} {
     set design $::env(DESIGN)
@@ -30,5 +32,6 @@ report_worst_slack -max -digits 3 >> $rpt
 report_worst_slack -min -digits 3 >> $rpt
 report_check_types -max_slew -max_capacitance -max_fanout -violators >> $rpt
 
-puts "$design: worst setup slack [format %.3f [sta::worst_slack -max]] ns,\
-      worst hold slack [format %.3f [sta::worst_slack -min]] ns  ->  $rpt"
+report_worst_slack -max -digits 3
+report_worst_slack -min -digits 3
+puts "$design: full report written to $rpt"

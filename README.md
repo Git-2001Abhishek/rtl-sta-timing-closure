@@ -18,7 +18,7 @@ critical path reported by STA for the version before it. The target is
 
 ## Flow
 
-SystemVerilog RTL → Simulation → Synthesis (Yosys) → STA (OpenSTA) → Critical Path Analysis → RTL Optimization
+SystemVerilog RTL → Simulation → Synthesis (Yosys) → STA → Critical Path Analysis → RTL Optimization
 
 ```text
 rtl/*.sv ──► Icarus Verilog (tb_dot2: RTL sim, 5 versions in parallel)
@@ -40,7 +40,8 @@ reports/  setup / hold paths, WNS / TNS, Fmax, area
 - Pipelined arithmetic datapath
 - SDC timing constraints
 - RTL synthesis using Yosys
-- Static timing analysis using OpenSTA
+- Static timing analysis: NLDM timing engine written for this project
+  ([`scripts/sta.py`](scripts/sta.py)), plus an OpenSTA script for the same run
 - Critical-path identification
 - Setup/hold analysis
 - Timing optimization through RTL modification
@@ -177,7 +178,10 @@ table interpolation gives 0.2057 ns, the report shows 0.206 ns).
 
 [`scripts/sta.tcl`](scripts/sta.tcl) runs the same netlists, library,
 wire-load model and SDC through OpenSTA (`make opensta`) on a machine
-where it is installed.
+where it is installed (for example Linux or WSL). **It has not been run
+yet**, so all numbers in this README come from `sta.py`. Comparing the two
+is the obvious next validation step. Expect small differences: OpenSTA
+also models wire RC delay and computes slews more carefully.
 
 ## How to run
 
@@ -190,6 +194,7 @@ make sim          # RTL simulation
 make flow         # synthesis + STA for all versions -> reports/, results/
 make gls          # gate-level simulation of the netlists
 make opensta      # optional: OpenSTA cross-check
+make lint         # Verilator -Wall lint (all versions clean)
 ```
 
 With `yowasp-yosys` instead of a native Yosys:
@@ -205,8 +210,9 @@ Other target periods: `python scripts/run_flow.py --period 1.25`.
 
 - SystemVerilog
 - Yosys
-- OpenSTA / Python STA engine (`scripts/sta.py`)
+- Python STA engine (`scripts/sta.py`), OpenSTA script (`scripts/sta.tcl`)
 - Icarus Verilog
+- Verilator (lint)
 - GTKWave
 
 ## Repository Structure

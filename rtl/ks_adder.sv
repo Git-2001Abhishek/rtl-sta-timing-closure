@@ -16,7 +16,10 @@ module ks_adder #(
     localparam int L = $clog2(N);
 
     // G[k][i] / P[k][i]: group generate / propagate of bits (i - 2**k + 1) .. i
+    // P of the last level is computed by the generate loop but not needed
+    /* verilator lint_off UNUSEDSIGNAL */
     logic [L:0][N-1:0] G, P;
+    /* verilator lint_on UNUSEDSIGNAL */
 
     assign G[0] = x & y;
     assign P[0] = x ^ y;

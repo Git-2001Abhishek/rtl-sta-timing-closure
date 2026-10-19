@@ -5,6 +5,7 @@
 #   make flow      Yosys synthesis + STA (scripts/sta.py) for all versions
 #   make gls       gate-level simulation of the synthesized netlists
 #   make opensta   cross-check the netlists with OpenSTA (if installed)
+#   make lint      Verilator -Wall lint of all RTL
 #   make all       lib + sim + flow + gls
 #
 # Tools can be overridden, e.g.  make flow YOSYS=yowasp-yosys PYTHON=python3
@@ -17,7 +18,7 @@ DESIGNS = dot2_v1 dot2_v2 dot2_v3 dot2_v4 dot2_v5
 RTL     = rtl/ks_adder.sv $(addprefix rtl/,$(addsuffix .sv,$(DESIGNS)))
 LIB     = lib/nangate45_typ.lib
 
-.PHONY: all lib sim flow gls opensta clean
+.PHONY: all lib sim flow flow-default-synth gls opensta lint clean
 
 all: lib sim flow gls
 
@@ -46,6 +47,9 @@ gls: build/cells.v
 	iverilog -g2012 -DGLS -o build/gls.vvp -s tb_dot2 tb/tb_dot2.sv \
 	    $(foreach d,$(DESIGNS),results/$(d)/$(d)_netlist.v) build/cells.v
 	vvp -n build/gls.vvp | tee results/gls.log
+
+lint:
+	for d in $(DESIGNS); do verilator --lint-only -Wall --top-module $$d rtl/$$d.sv rtl/ks_adder.sv || exit 1; done
 
 opensta: $(LIB)
 	for d in $(DESIGNS); do DESIGN=$$d $(STA) -exit scripts/sta.tcl; done

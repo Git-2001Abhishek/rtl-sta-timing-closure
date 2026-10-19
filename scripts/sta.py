@@ -303,9 +303,11 @@ def parse_sdc(path, in_ports, out_ports):
         if cmd == "all_outputs":
             return list(out_ports)
         if cmd == "get_ports":
+            # a pattern matches a bit name ("a[3]") or a whole bus ("a")
             res = []
             for pat in arg.split():
-                res += [p for p in all_ports if fnmatch.fnmatchcase(p, pat)]
+                res += [p for p in all_ports
+                        if fnmatch.fnmatchcase(p, pat) or fnmatch.fnmatchcase(p.split("[")[0], pat)]
             return res
         if cmd == "get_clocks":
             return [arg]
@@ -336,6 +338,7 @@ def parse_sdc(path, in_ports, out_ports):
                 i += 1
         if cmd == "set":
             vars_[pos[0]] = pos[1]
+            continue
         elif cmd == "create_clock":
             c.period = float(opts["-period"])
             c.clock_name = opts.get("-name", "clk")
